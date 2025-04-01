@@ -2,6 +2,8 @@
 
 This module by Amadeco extends the Smile Custom Entity (https://github.com/Smile-SA/magento2-module-custom-entity) module to add SEO capabilities.
 
+![Screenshot of the new fields in custom entity form]([http://url/to/img.png](https://github.com/user-attachments/assets/dedf41e7-394e-4010-9354-23f7d7c5531a))
+
 ## Features
 
 - Adds SEO attributes to Custom Entities:
