@@ -16,9 +16,4 @@
     <type name="Smile\CustomEntity\Model\CustomEntity">
         <plugin name="amadeco_smilecustomentityseo_custom_entity_plugin" type="Amadeco\SmileCustomEntitySeo\Plugin\CustomEntityPlugin" sortOrder="10" />
     </type>
-    
-    <!-- Plugin to apply SEO metadata in the View controller -->
-    <type name="Smile\CustomEntity\Controller\Entity\View">
-        <plugin name="amadeco_smilecustomentityseo_controller_entity_view_plugin" type="Amadeco\SmileCustomEntitySeo\Plugin\Controller\Entity\ViewPlugin" sortOrder="10" />
-    </type>
 </config>
