@@ -1,5 +1,12 @@
 # Smile Custom Entity SEO Module
 
+[![Latest Stable Version](https://img.shields.io/github/v/release/Amadeco/magento2-smile-custom-entity-seo)](https://github.com/Amadeco/magento2-smile-custom-entity-seo/releases)
+[![License](https://img.shields.io/github/license/Amadeco/magento2-smile-custom-entity-seo)](https://github.com/Amadeco/magento2-smile-custom-entity-seo/blob/main/LICENSE)
+[![Magento](https://img.shields.io/badge/Magento-2.4.x-brightgreen.svg)](https://magento.com)
+[![PHP](https://img.shields.io/badge/PHP-8.1|8.2|8.3-blue.svg)](https://www.php.net)
+
+[SPONSOR: Amadeco](https://www.amadeco.fr)
+
 This module by Amadeco extends the Smile Custom Entity (https://github.com/Smile-SA/magento2-module-custom-entity) module to add SEO capabilities.
 
 ![Screenshot of the new fields in custom entity form](https://github.com/user-attachments/assets/dedf41e7-394e-4010-9354-23f7d7c5531a)
