@@ -1,6 +1,6 @@
 # Smile Custom Entity SEO Module
 
-This module by Amadeco extends the Smile Custom Entity module to add SEO capabilities.
+This module by Amadeco extends the Smile Custom Entity (https://github.com/Smile-SA/magento2-module-custom-entity) module to add SEO capabilities.
 
 ## Features
 
