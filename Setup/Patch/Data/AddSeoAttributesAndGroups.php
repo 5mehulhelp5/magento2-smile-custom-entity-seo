@@ -19,6 +19,7 @@ use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Framework\Setup\Patch\PatchRevertableInterface;
 use Smile\CustomEntity\Api\Data\CustomEntityAttributeInterface;
+use Amadeco\SmileCustomEntitySeo\Api\Data\CustomEntitySeoInterface;
 use Amadeco\SmileCustomEntitySeo\Model\Source\Robots;
 
 /**
@@ -27,9 +28,52 @@ use Amadeco\SmileCustomEntitySeo\Model\Source\Robots;
 class AddSeoAttributesAndGroups implements DataPatchInterface, PatchRevertableInterface
 {
     /**
-     * @var string
+     * SEO attribute group name
      */
-    private const ATTRIBUTE_GROUP_SEO_NAME = 'Search Engine Optimization';
+    public const SEO_GROUP_NAME = 'Search Engine Optimization';
+
+    /**
+     * SEO attribute group sort order
+     */
+    public const SEO_GROUP_SORT_ORDER = 100;
+
+    /**
+     * SEO attributes configuration
+     */
+    private const SEO_ATTRIBUTES = [
+        CustomEntitySeoInterface::META_TITLE => [
+            'type' => 'varchar',
+            'label' => 'Meta Title',
+            'input' => 'text',
+            'required' => false,
+            'sort_order' => 10
+        ],
+        CustomEntitySeoInterface::META_DESCRIPTION => [
+            'type' => 'text',
+            'label' => 'Meta Description',
+            'input' => 'textarea',
+            'required' => false,
+            'note' => 'Maximum 255 chars',
+            'class' => 'validate-length maximum-length-255',
+            'sort_order' => 20
+        ],
+        CustomEntitySeoInterface::META_KEYWORDS => [
+            'type' => 'text',
+            'label' => 'Meta Keywords',
+            'input' => 'textarea',
+            'required' => false,
+            'sort_order' => 30
+        ],
+        CustomEntitySeoInterface::META_ROBOTS => [
+            'type' => 'varchar',
+            'label' => 'Meta Robots',
+            'input' => 'select',
+            'source' => Robots::class,
+            'required' => false,
+            'sort_order' => 40,
+            'default' => ''
+        ]
+    ];
 
     /**
      * @var ModuleDataSetupInterface
@@ -71,91 +115,76 @@ class AddSeoAttributesAndGroups implements DataPatchInterface, PatchRevertableIn
         /** @var EavSetup $eavSetup */
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
 
-        // Create attribute group if it doesn't exist
+        $this->createSeoAttributeGroups($eavSetup);
+        $this->createSeoAttributes($eavSetup);
+
+        return $this;
+    }
+
+    /**
+     * Create SEO attribute groups in all attribute sets
+     *
+     * @param EavSetup $eavSetup
+     * @return void
+     */
+    private function createSeoAttributeGroups(EavSetup $eavSetup): void
+    {
         $entityTypeId = $eavSetup->getEntityTypeId(CustomEntityAttributeInterface::ENTITY_TYPE_CODE);
         $attributeSetIds = $eavSetup->getAllAttributeSetIds($entityTypeId);
 
-        // Create SEO group in all attribute sets
+        // Create SEO group in all attribute sets if it doesn't exist
         foreach ($attributeSetIds as $attributeSetId) {
-            $groupId = $eavSetup->getAttributeGroupId($entityTypeId, $attributeSetId, self::ATTRIBUTE_GROUP_SEO_NAME);
+            $groupId = $eavSetup->getAttributeGroupId($entityTypeId, $attributeSetId, self::SEO_GROUP_NAME);
 
             if (!$groupId) {
                 $eavSetup->addAttributeGroup(
                     CustomEntityAttributeInterface::ENTITY_TYPE_CODE,
                     $attributeSetId,
-                    self::ATTRIBUTE_GROUP_SEO_NAME,
-                    100 // Sort order
+                    self::SEO_GROUP_NAME,
+                    self::SEO_GROUP_SORT_ORDER
                 );
             }
         }
+    }
 
-        // Add meta_title attribute
-        $eavSetup->addAttribute(
-            CustomEntityAttributeInterface::ENTITY_TYPE_CODE,
-            'meta_title',
-            [
-                'type' => 'varchar',
-                'label' => 'Meta Title',
-                'input' => 'text',
-                'required' => false,
-                'sort_order' => 10,
+    /**
+     * Create SEO attributes if they don't exist
+     *
+     * @param EavSetup $eavSetup
+     * @return void
+     * @throws LocalizedException
+     */
+    private function createSeoAttributes(EavSetup $eavSetup): void
+    {
+        foreach (self::SEO_ATTRIBUTES as $attributeCode => $attributeData) {
+            // Check if attribute already exists
+            try {
+                $attribute = $this->eavConfig->getAttribute(
+                    CustomEntityAttributeInterface::ENTITY_TYPE_CODE,
+                    $attributeCode
+                );
+
+                if ($attribute && $attribute->getId()) {
+                    // Attribute already exists, skip creation
+                    continue;
+                }
+            } catch (\Exception $e) {
+                // Attribute doesn't exist, we can create it
+            }
+
+            // Add common attribute properties
+            $attributeData = array_merge($attributeData, [
                 'global' => ScopedAttributeInterface::SCOPE_STORE,
-                'group' => self::ATTRIBUTE_GROUP_SEO_NAME,
-                'is_used_in_grid' => false,
-                'is_visible_in_grid' => false,
-                'is_filterable_in_grid' => false,
-                'note' => 'Maximum 255 characters'
-            ]
-        );
+                'group' => self::SEO_GROUP_NAME
+            ]);
 
-        // Add meta_description attribute
-        $eavSetup->addAttribute(
-            CustomEntityAttributeInterface::ENTITY_TYPE_CODE,
-            'meta_description',
-            [
-                'type' => 'text',
-                'label' => 'Meta Description',
-                'input' => 'textarea',
-                'required' => false,
-                'sort_order' => 20,
-                'global' => ScopedAttributeInterface::SCOPE_STORE,
-                'group' => self::ATTRIBUTE_GROUP_SEO_NAME
-            ]
-        );
-
-        // Add meta_keywords attribute
-        $eavSetup->addAttribute(
-            CustomEntityAttributeInterface::ENTITY_TYPE_CODE,
-            'meta_keywords',
-            [
-                'type' => 'text',
-                'label' => 'Meta Keywords',
-                'input' => 'textarea',
-                'required' => false,
-                'sort_order' => 30,
-                'global' => ScopedAttributeInterface::SCOPE_STORE,
-                'group' => self::ATTRIBUTE_GROUP_SEO_NAME
-            ]
-        );
-
-        // Add meta_robots attribute
-        $eavSetup->addAttribute(
-            CustomEntityAttributeInterface::ENTITY_TYPE_CODE,
-            'meta_robots',
-            [
-                'type' => 'varchar',
-                'label' => 'Meta Robots',
-                'input' => 'select',
-                'source' => Robots::class,
-                'required' => false,
-                'sort_order' => 40,
-                'global' => ScopedAttributeInterface::SCOPE_STORE,
-                'group' => self::ATTRIBUTE_GROUP_SEO_NAME,
-                'default' => ''
-            ]
-        );
-
-        return $this;
+            // Create attribute
+            $eavSetup->addAttribute(
+                CustomEntityAttributeInterface::ENTITY_TYPE_CODE,
+                $attributeCode,
+                $attributeData
+            );
+        }
     }
 
     /**
@@ -167,10 +196,9 @@ class AddSeoAttributesAndGroups implements DataPatchInterface, PatchRevertableIn
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
 
         // Remove attributes
-        $eavSetup->removeAttribute(CustomEntityAttributeInterface::ENTITY_TYPE_CODE, 'meta_title');
-        $eavSetup->removeAttribute(CustomEntityAttributeInterface::ENTITY_TYPE_CODE, 'meta_description');
-        $eavSetup->removeAttribute(CustomEntityAttributeInterface::ENTITY_TYPE_CODE, 'meta_keywords');
-        $eavSetup->removeAttribute(CustomEntityAttributeInterface::ENTITY_TYPE_CODE, 'meta_robots');
+        foreach (array_keys(self::SEO_ATTRIBUTES) as $attributeCode) {
+            $eavSetup->removeAttribute(CustomEntityAttributeInterface::ENTITY_TYPE_CODE, $attributeCode);
+        }
 
         return $this;
     }
