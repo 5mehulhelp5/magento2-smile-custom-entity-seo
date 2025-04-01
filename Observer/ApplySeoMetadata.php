@@ -105,6 +105,6 @@ class ApplySeoMetadata implements ObserverInterface
      */
     private function isCustomEntityView(): bool
     {
-        return $this->request->getFullActionName() === 'custom_entity_entity_view';
+        return $this->request->getFullActionName() === 'smile_custom_entity_entity_view';
     }
 }
