@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Amadeco SmileCustomEntitySeo module
+ *
+ * @category  Amadeco
+ * @package   Amadeco_SmileCustomEntitySeo
+ * @copyright Ilan Parmentier
+ */
 declare(strict_types=1);
 
 namespace Amadeco\SmileCustomEntitySeo\Setup\Patch\Data;
