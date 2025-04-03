@@ -69,30 +69,30 @@ class ApplySeoMetadata implements ObserverInterface
         /** @var CustomEntity|null $entity */
         $entity = $this->registry->registry('current_custom_entity');
 
-        if (!$entity || !$entity instanceof CustomEntity) {
+        if (!$entity || !($entity instanceof CustomEntity)) {
             return;
         }
 
-        // Apply meta title
-        $metaTitle = $entity->getData('meta_title');
+        // Apply meta title only if explicitly set
+        $metaTitle = $entity->getMetaTitle();
         if (!empty($metaTitle)) {
             $this->pageConfig->getTitle()->set($metaTitle);
         }
 
-        // Apply meta description
-        $metaDescription = $entity->getData('meta_description');
+        // Apply meta description only if explicitly set
+        $metaDescription = $entity->getMetaDescription();
         if (!empty($metaDescription)) {
             $this->pageConfig->setDescription($metaDescription);
         }
 
-        // Apply meta keywords
-        $metaKeywords = $entity->getData('meta_keywords');
+        // Apply meta keywords only if explicitly set
+        $metaKeywords = $entity->getMetaKeywords();
         if (!empty($metaKeywords)) {
             $this->pageConfig->setKeywords($metaKeywords);
         }
 
         // Apply meta robots only if explicitly set
-        $metaRobots = $entity->getData('meta_robots');
+        $metaRobots = $entity->getMetaRobots();
         if (!empty($metaRobots)) {
             $this->pageConfig->setRobots($metaRobots);
         }
