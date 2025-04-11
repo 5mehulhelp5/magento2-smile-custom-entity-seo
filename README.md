@@ -51,4 +51,4 @@ This module:
 
 ## License
 
-This module is licensed under the Open Software License ("OSL") v3.0.
+This module is licensed under the Open Software License ("OSL") v3.0. See the [LICENSE.txt](LICENSE.txt) file for details.
