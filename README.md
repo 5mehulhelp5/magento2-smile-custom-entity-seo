@@ -3,7 +3,7 @@
 [![Latest Stable Version](https://img.shields.io/github/v/release/Amadeco/magento2-smile-custom-entity-seo)](https://github.com/Amadeco/magento2-smile-custom-entity-seo/releases)
 [![License](https://img.shields.io/github/license/Amadeco/magento2-smile-custom-entity-seo)](https://github.com/Amadeco/magento2-smile-custom-entity-seo/blob/main/LICENSE)
 [![Magento](https://img.shields.io/badge/Magento-2.4.x-brightgreen.svg)](https://magento.com)
-[![PHP](https://img.shields.io/badge/PHP-8.1|8.2|8.3-blue.svg)](https://www.php.net)
+[![PHP](https://img.shields.io/badge/PHP-8.3-blue.svg)](https://www.php.net)
 
 [SPONSOR: Amadeco](https://www.amadeco.fr)
 
