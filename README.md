@@ -7,7 +7,7 @@
 
 [SPONSOR: Amadeco](https://www.amadeco.fr)
 
-This module by Amadeco extends the Smile Custom Entity (https://github.com/Smile-SA/magento2-module-custom-entity) module to add SEO capabilities.
+This module by Amadeco extends the [Smile Custom Entity](https://github.com/Smile-SA/magento2-module-custom-entity) module to add SEO capabilities.
 
 ![Screenshot of the new fields in custom entity form](https://github.com/user-attachments/assets/dedf41e7-394e-4010-9354-23f7d7c5531a)
 
@@ -33,7 +33,7 @@ bin/magento setup:upgrade
 
 - PHP 8.1, 8.2 or 8.3
 - Magento 2.4.x
-- Smile Custom Entity module version 1.3 or higher
+- Smile Custom Entity module version 1.3 or higher (https://github.com/Smile-SA/magento2-module-custom-entity) 
 
 ## Usage
 
