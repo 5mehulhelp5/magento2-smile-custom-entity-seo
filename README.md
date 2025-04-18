@@ -31,7 +31,7 @@ bin/magento setup:upgrade
 
 ## Requirements
 
-- PHP 8.1, 8.2 or 8.3
+- PHP 8.3+
 - Magento 2.4.x
 - Smile Custom Entity module version 1.3 or higher (https://github.com/Smile-SA/magento2-module-custom-entity) 
 
